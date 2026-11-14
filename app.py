@@ -14,46 +14,45 @@ st.set_page_config(
 
 def weather_icon(kind, color="#087EAD", size=32):
     icons = {
-        "sun": """
-            <circle cx="12" cy="12" r="4"/>
-            <path d="M12 2v2 M12 20v2 M2 12h2 M20 12h2
-            M4.93 4.93l1.42 1.42 M17.65 17.65l1.42 1.42
-            M4.93 19.07l1.42-1.42 M17.65 6.35l1.42-1.42"/>
-        """,
-        "cloud": """
-            <path d="M20 16.2A4.8 4.8 0 0 0 18 7h-1.2
-            A7 7 0 1 0 4 16.2Z"/>
-        """,
-        "rain": """
-            <path d="M20 16.2A4.8 4.8 0 0 0 18 7h-1.2
-            A7 7 0 1 0 4 16.2Z"/>
-            <path d="M8 19l-1 3 M13 19l-1 3 M18 19l-1 3"/>
-        """,
-        "temperature": """
-            <path d="M14 14.76V5a2 2 0 0 0-4 0v9.76
-            a4 4 0 1 0 4 0Z"/>
-            <path d="M12 11v7"/>
-        """,
-        "humidity": """
-            <path d="M12 2.5S5 10 5 15a7 7 0 0 0 14 0
-            c0-5-7-12.5-7-12.5Z"/>
-        """,
-        "wind": """
-            <path d="M3 8h12a3 3 0 1 0-3-3"/>
-            <path d="M2 12h17a3 3 0 1 1-3 3"/>
-            <path d="M4 16h6"/>
-        """
+        "sun": (
+            '<circle cx="12" cy="12" r="4"/>'
+            '<path d="M12 2v2 M12 20v2 M2 12h2 M20 12h2 '
+            'M4.93 4.93l1.42 1.42 M17.65 17.65l1.42 1.42 '
+            'M4.93 19.07l1.42-1.42 M17.65 6.35l1.42-1.42"/>'
+        ),
+        "cloud": (
+            '<path d="M20 16.2A4.8 4.8 0 0 0 18 7h-1.2 '
+            'A7 7 0 1 0 4 16.2Z"/>'
+        ),
+        "rain": (
+            '<path d="M20 16.2A4.8 4.8 0 0 0 18 7h-1.2 '
+            'A7 7 0 1 0 4 16.2Z"/>'
+            '<path d="M8 19l-1 3 M13 19l-1 3 M18 19l-1 3"/>'
+        ),
+        "temperature": (
+            '<path d="M14 14.76V5a2 2 0 0 0-4 0v9.76 '
+            'a4 4 0 1 0 4 0Z"/>'
+            '<path d="M12 11v7"/>'
+        ),
+        "humidity": (
+            '<path d="M12 2.5S5 10 5 15a7 7 0 0 0 14 0 '
+            'c0-5-7-12.5-7-12.5Z"/>'
+        ),
+        "wind": (
+            '<path d="M3 8h12a3 3 0 1 0-3-3"/>'
+            '<path d="M2 12h17a3 3 0 1 1-3 3"/>'
+            '<path d="M4 16h6"/>'
+        )
     }
 
-    return f"""
-    <svg xmlns="http://www.w3.org/2000/svg"
-         width="{size}" height="{size}" viewBox="0 0 24 24"
-         fill="none" stroke="{color}" stroke-width="1.9"
-         stroke-linecap="round" stroke-linejoin="round"
-         style="flex-shrink:0; display:block;">
-         {icons[kind]}
-    </svg>
-    """
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" '
+        f'width="{size}" height="{size}" viewBox="0 0 24 24" '
+        f'fill="none" stroke="{color}" stroke-width="1.9" '
+        f'stroke-linecap="round" stroke-linejoin="round" '
+        f'style="flex-shrink:0; display:block;">'
+        f'{icons[kind]}</svg>'
+    )
 
 
 st.markdown("""
@@ -198,6 +197,10 @@ p, label, li {
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
 }
 
 .hero::after {
@@ -210,6 +213,13 @@ p, label, li {
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 180, 91, 0.22) 0%, rgba(255, 180, 91, 0) 70%);
     pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .hero-top {
@@ -261,11 +271,10 @@ p, label, li {
 }
 
 .hero-icon {
-    position: absolute;
-    right: 38px;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.92;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    opacity: 0.94;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
@@ -834,13 +843,13 @@ hr {
 
 def section_heading(eyebrow, title, subtitle=None):
     subtitle_html = f'<p class="section-subtitle">{subtitle}</p>' if subtitle else ""
-    st.markdown(f"""
-    <div class="section-header">
-        <span class="section-eyebrow">{eyebrow}</span>
-        <h2>{title}</h2>
-        {subtitle_html}
-    </div>
-    """, unsafe_allow_html=True)
+    st.html(
+        f'<div class="section-header">'
+        f'<span class="section-eyebrow">{eyebrow}</span>'
+        f'<h2>{title}</h2>'
+        f'{subtitle_html}'
+        f'</div>'
+    )
 
 
 def style_chart(fig, height=480, show_legend=True):
@@ -955,32 +964,35 @@ except Exception as error:
 
 
 # Hero Section
-st.markdown(f"""
-<div class="hero">
-    <div class="hero-top">
-        <div class="hero-tag">
-            <span class="hero-tag-dot"></span>
-            WEATHER INTELLIGENCE &middot; DATA ANALYTICS
-        </div>
-    </div>
-    <div class="hero-icon">{weather_icon("sun", "#FFD166", 68)}</div>
-    <h1>WeatherProjector</h1>
-    <p>Discover the patterns behind every season.</p>
-    <p>Explore historical temperatures, rainfall, humidity and atmospheric behaviour through interactive visual analytics.</p>
-</div>
-""", unsafe_allow_html=True)
+hero_html = (
+    '<div class="hero">'
+    '<div class="hero-content">'
+    '<div class="hero-top">'
+    '<div class="hero-tag">'
+    '<span class="hero-tag-dot"></span>'
+    'WEATHER INTELLIGENCE &middot; DATA ANALYTICS'
+    '</div>'
+    '</div>'
+    '<h1>WeatherProjector</h1>'
+    '<p>Discover the patterns behind every season.</p>'
+    '<p>Explore historical temperatures, rainfall, humidity and atmospheric behaviour through interactive visual analytics.</p>'
+    '</div>'
+    f'<div class="hero-icon">{weather_icon("sun", "#FFD166", 68)}</div>'
+    '</div>'
+)
+st.html(hero_html)
 
 
 # Sidebar Controls
-st.sidebar.markdown("""
-<div style="padding: 4px 0 14px 0; border-bottom: 1px solid #DCEBF5; margin-bottom: 16px;">
-    <div style="font-size: 0.72rem; font-weight: 700; color: #087EAD; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;">
-        Filter Parameters
-    </div>
-    <h2 style="font-size: 1.35rem; color: #0F2942; margin: 0 0 4px 0;">Dashboard Controls</h2>
-    <p style="font-size: 0.85rem; color: #5A7184; margin: 0;">Personalise your weather exploration.</p>
-</div>
-""", unsafe_allow_html=True)
+st.sidebar.html(
+    '<div style="padding: 4px 0 14px 0; border-bottom: 1px solid #DCEBF5; margin-bottom: 16px;">'
+    '<div style="font-size: 0.72rem; font-weight: 700; color: #087EAD; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;">'
+    'Filter Parameters'
+    '</div>'
+    '<h2 style="font-size: 1.35rem; color: #0F2942; margin: 0 0 4px 0;">Dashboard Controls</h2>'
+    '<p style="font-size: 0.85rem; color: #5A7184; margin: 0;">Personalise your weather exploration.</p>'
+    '</div>'
+)
 
 min_date = df["DATE"].min().date()
 max_date = df["DATE"].max().date()
@@ -1035,18 +1047,18 @@ if filtered_df.empty:
 # Active Filter Summary Bar
 active_start = filtered_df["DATE"].min().strftime("%b %d, %Y")
 active_end = filtered_df["DATE"].max().strftime("%b %d, %Y")
-st.markdown(f"""
-<div class="filter-bar">
-    <div class="filter-bar-left">
-        <span>Active Dataset Window:</span>
-        <span class="filter-pill">{active_start} &ndash; {active_end}</span>
-        <span class="filter-pill filter-pill-orange">{len(selected_conditions)} of {len(conditions)} Conditions</span>
-    </div>
-    <div class="filter-bar-left">
-        <span class="filter-pill">{len(filtered_df):,} Observations</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+st.html(
+    f'<div class="filter-bar">'
+    f'<div class="filter-bar-left">'
+    f'<span>Active Dataset Window:</span>'
+    f'<span class="filter-pill">{active_start} &ndash; {active_end}</span>'
+    f'<span class="filter-pill filter-pill-orange">{len(selected_conditions)} of {len(conditions)} Conditions</span>'
+    f'</div>'
+    f'<div class="filter-bar-left">'
+    f'<span class="filter-pill">{len(filtered_df):,} Observations</span>'
+    f'</div>'
+    f'</div>'
+)
 
 
 # 1. Weather Overview KPI Cards
@@ -1090,17 +1102,15 @@ metrics = [
 metric_html = '<div class="metric-grid">'
 
 for kind, label, value, color, bg_color in metrics:
-    metric_html += f"""
-    <div class="custom-metric" style="--card-accent: {color}; --icon-bg: {bg_color};">
-        <div class="metric-top">
-            <div class="metric-label">{label}</div>
-            <div class="metric-icon">
-                {weather_icon(kind, color, 24)}
-            </div>
-        </div>
-        <div class="metric-value">{value}</div>
-    </div>
-    """
+    metric_html += (
+        f'<div class="custom-metric" style="--card-accent: {color}; --icon-bg: {bg_color};">'
+        f'<div class="metric-top">'
+        f'<div class="metric-label">{label}</div>'
+        f'<div class="metric-icon">{weather_icon(kind, color, 24)}</div>'
+        f'</div>'
+        f'<div class="metric-value">{value}</div>'
+        f'</div>'
+    )
 
 metric_html += "</div>"
 
@@ -1511,15 +1521,15 @@ st.download_button(
 # Footer
 st.divider()
 
-st.markdown("""
-<div class="footer">
-    <h3>WeatherProjector</h3>
-    <p>Turning historical weather data into meaningful insights.</p>
-    <div class="footer-badges">
-        <span class="footer-badge">Python</span>
-        <span class="footer-badge">Pandas</span>
-        <span class="footer-badge">Plotly</span>
-        <span class="footer-badge">Streamlit</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+st.html(
+    '<div class="footer">'
+    '<h3>WeatherProjector</h3>'
+    '<p>Turning historical weather data into meaningful insights.</p>'
+    '<div class="footer-badges">'
+    '<span class="footer-badge">Python</span>'
+    '<span class="footer-badge">Pandas</span>'
+    '<span class="footer-badge">Plotly</span>'
+    '<span class="footer-badge">Streamlit</span>'
+    '</div>'
+    '</div>'
+)
